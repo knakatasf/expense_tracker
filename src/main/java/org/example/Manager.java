@@ -54,6 +54,19 @@ public class Manager {
         Collections.sort(expenses);
     }
 
+    public void operateOCR() {
+        System.out.println("Please enter image path: ");
+        String imagePath = input.next();
+
+        OCROperation ocr = new OCROperation();
+        Expense expense = ocr.readImage(imagePath);
+        if (expense == null) {
+            System.out.println("Couldn't read or extract data from the receipt..");
+            return;
+        }
+        enterExpense(expense);
+    }
+
     public void displayExpenses() {
         for (Expense expense : expenses) {
             expense.display();
