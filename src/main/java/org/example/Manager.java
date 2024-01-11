@@ -8,6 +8,7 @@ import java.io.*;
 public class Manager {
     private List<Expense> expenses;
     private Scanner input;
+
     public Manager() {
         input = new Scanner(System.in);
         expenses = new ArrayList<>();
@@ -24,7 +25,7 @@ public class Manager {
             Matcher dateMat = datePat.matcher(date);
             if (dateMat.matches()) break;
             else {
-                System.out.println("Invalid date format.. Please use mm/dd/yyyy");
+                System.out.print("Invalid date format.. Please use mm/dd/yyyy: ");
                 date = input.next();
             }
         }
@@ -55,8 +56,9 @@ public class Manager {
     }
 
     public void operateOCR() {
-        System.out.println("Please enter image path: ");
+        System.out.print("Please enter image path: ");
         String imagePath = input.next();
+        if (imagePath.isEmpty()) return;
 
         OCROperation ocr = new OCROperation();
         Expense expense = ocr.readImage(imagePath);
@@ -67,8 +69,33 @@ public class Manager {
         enterExpense(expense);
     }
 
+    public void readFile() {
+        System.out.print("Please enter name of file to read data: ");
+        String filename = input.next();
+
+        FileOperation fileOp = new FileOperation();
+        List<Expense> readList = fileOp.readExpenses(filename);
+        displayExpenses(readList);
+    }
+
+    public void saveExpenses() {
+        System.out.print("Please enter name of file to save data: ");
+        String filename = input.next();
+
+        FileOperation fileOp = new FileOperation();
+        fileOp.saveExpenses(filename, expenses);
+        System.out.println("Data saved in " + filename);
+    }
+
     public void displayExpenses() {
         for (Expense expense : expenses) {
+            expense.display();
+        }
+    }
+
+    public void displayExpenses(List<Expense> expenses) {
+        for (Expense expense : expenses) {
+            System.out.println();
             expense.display();
         }
     }

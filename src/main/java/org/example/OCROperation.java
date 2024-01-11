@@ -24,7 +24,7 @@ public class OCROperation {
                 break;
             } catch (TesseractException e) {
                 e.printStackTrace();
-                System.out.println("Couldn't read the image.. Please try new image or press enter to quit." +
+                System.out.print("Couldn't read the image.. Please try new image or press enter to quit." +
                         "\nImage path: ");
                 Scanner input = new Scanner(System.in);
                 imagePath = input.next();
@@ -33,6 +33,7 @@ public class OCROperation {
         }
         if (ocrResult.isEmpty()) return null;
 
+        System.out.println(ocrResult);
         Expense expense = makeExpenseObj(ocrResult);
         return expense;
     }
@@ -108,7 +109,6 @@ public class OCROperation {
                 continue;
             }
             if (flag) { // If found the keyword "Total", "Amount", the next digit value should be total price
-                System.out.println(word);
                 Matcher costMat = costPat.matcher(word);
                 if (costMat.matches()) {
                     word = word.replace("$", "");
