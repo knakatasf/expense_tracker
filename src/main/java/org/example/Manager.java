@@ -75,6 +75,7 @@ public class Manager {
 
         FileOperation fileOp = new FileOperation();
         List<Expense> readList = fileOp.readExpenses(filename);
+        if (readList == null) return;
         displayExpenses(readList);
     }
 

@@ -23,7 +23,7 @@ public class ExpenseTrackerApp {
             }
             choice = chooseMenu();
         }
-        System.out.println("\nThank you for using this program. Have a superior day!");
+        System.out.println("\nThank you for using this program. Have a great day!");
     }
 
     private static int chooseMenu() {

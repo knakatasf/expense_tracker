@@ -33,8 +33,30 @@ public class OCROperation {
         }
         if (ocrResult.isEmpty()) return null;
 
-        System.out.println(ocrResult);
         Expense expense = makeExpenseObj(ocrResult);
+        System.out.println("Extracted Data:\n");
+        expense.display();
+
+        Scanner input = new Scanner(System.in);
+        System.out.print("\nDo you want to edit data?\n" +
+                "If no, press enter. If yes, press 1: Date, 2: Item Name, 3: Cost -> ");
+        while (true) {
+            String choice = input.next();
+            if (choice.isEmpty()) {
+                input.next();
+                break;
+            }
+            try {
+                int toEdit = Integer.parseInt(choice);
+                if (toEdit >= 1 && toEdit <= 3) {
+                    editExtractedData(expense, toEdit);
+                    break;
+                }
+                System.out.print("Please input 1 to 3. Or press enter not to edit -> ");
+            } catch (Exception e) {
+                System.out.print("Please input 1 to 3. Or press enter not to edit -> ");
+            }
+        }
         return expense;
     }
 
@@ -118,5 +140,45 @@ public class OCROperation {
             }
         }
         return 0;
+    }
+
+    private void editExtractedData(Expense expense, int toEdit) {
+        Scanner input = new Scanner(System.in);
+
+        switch (toEdit) {
+            case 1 :
+                System.out.print("Enter date (mm/dd/yyyy): ");
+                String date = input.next();
+                String patStr = "^(1[0-2]|0?[1-9])/(3[01]|[12][0-9]|0?[1-9])/[0-9]{4}$";
+                Pattern datePat = Pattern.compile(patStr);
+                while (true) {
+                    Matcher dateMat = datePat.matcher(date);
+                    if (dateMat.matches()) break;
+                    else {
+                        System.out.print("Invalid date format.. Please use mm/dd/yyyy: ");
+                        date = input.next();
+                    }
+                }
+                String[] dateStr = date.split("/");
+                if (dateStr[0].charAt(0) == '0') dateStr[0] = dateStr[0].substring(1);
+                if (dateStr[1].charAt(0) == '0') dateStr[1] = dateStr[1].substring(1);
+                int month = Integer.parseInt(dateStr[0]);
+                int day = Integer.parseInt(dateStr[1]);
+                int year = Integer.parseInt(dateStr[2]);
+
+                expense.setDate(month, day, year);
+                break;
+
+            case 2 :
+                System.out.print("\nEnter item: ");
+                String item = input.next();
+                expense.setItem(item);
+                break;
+
+            case 3 :
+                System.out.print("\nEnter cost: ");
+                double cost = input.nextDouble();
+                expense.setCost(cost);
+        }
     }
 }
