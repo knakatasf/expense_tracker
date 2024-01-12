@@ -1,10 +1,5 @@
 package org.example;
 
-import net.sourceforge.tess4j.ITesseract;
-import net.sourceforge.tess4j.Tesseract;
-import net.sourceforge.tess4j.TesseractException;
-
-import java.io.File;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
